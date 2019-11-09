@@ -1,0 +1,33 @@
+{
+  "variables": {
+    "region": "us-east-1",
+    "source_ami": "ami-0cc96feef8c6bbff3"
+  },
+  "builders": [
+    {
+      "type": "amazon-ebs",
+      "profile": "doubledigit",
+      "region": "{{user `region`}}",
+      "instance_type": "t2.medium",
+      "source_ami": "{{user `source_ami`}}",
+      "ssh_username": "ec2-user",
+      "ami_name": "ecs-instance-dd",
+      "ami_description": "Amazon Linux Image with Docker",
+      "run_tags": {
+        "Name": "packer-builder"
+      },
+      "tags": {
+        "Tool": "Packer",
+        "Purpose": "ECS-Server",
+        "Author": "vivek"
+      }
+    }
+  ],
+  "provisioners": [
+    {
+      "type" : "shell",
+      "script" : "./setup-config.sh",
+      "execute_command" : "sudo -E -S sh '{{ .Path }}'"
+    }
+  ]
+}

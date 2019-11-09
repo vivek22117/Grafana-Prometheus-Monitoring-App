@@ -1,0 +1,41 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Resource": "*",
+      "Action": [
+        "ec2:Describe*",
+        "cloudwatch:PutMetricAlarm",
+        "cloudwatch:DeleteAlarms",
+        "cloudwatch:*",
+        "ecs:Describe*",
+        "logs:Create*",
+        "logs:PutLogEvents",
+        "logs:DescribeLogGroups",
+        "ecr:GetAuthorizationToken",
+        "ecr:GetDownloadUrlForLayer",
+        "ecr:BatchGetImage",
+        "ecr:BatchCheckLayerAvailability",
+        "ecs:DiscoverPollEndpoint",
+        "ecs:Poll",
+        "ecs:StartTelemetrySession"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "ecs:Update*",
+        "ecs:Register*",
+        "ecs:Deregister*",
+        "ecs:List*",
+        "ecs:Put*",
+        "ecs:Run*",
+        "ecs:Start*",
+        "ecs:Stop*",
+        "ecs:Submit*"
+      ],
+      "Resource": "arn:aws:ecs:us-east-1:${account_id}:cluster/${environment}-${component-name}"
+    }
+  ]
+}

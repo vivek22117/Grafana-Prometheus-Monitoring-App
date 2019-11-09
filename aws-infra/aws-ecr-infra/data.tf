@@ -26,7 +26,6 @@ data "aws_iam_policy_document" "ecr_full_access" {
   }
 }
 
-
 data "aws_iam_policy_document" "ecr_readonly_access" {
   statement {
     sid = "ECRReadonlyAccess"
