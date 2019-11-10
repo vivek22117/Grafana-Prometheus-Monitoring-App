@@ -41,6 +41,8 @@ EOF
 }
 
 resource "aws_ecr_repository_policy" "monitoring_app_ecr_policy" {
+  depends_on = [data.aws_iam_policy_document.ecr_access_policy]
+
   repository = join("", aws_ecr_repository.monitoring_app_ecr.*.name)
-  policy = join("", data.aws_iam_policy_document.ecr_full_access.*.json)
+  policy = join("", data.aws_iam_policy_document.ecr_access_policy.*.json)
 }

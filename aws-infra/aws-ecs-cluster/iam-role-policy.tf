@@ -3,7 +3,7 @@
 ###########################################################
 resource "aws_iam_role" "ecs_instance_role" {
 
-  name ="MonitoringECSInstanceRole"
+  name               = "MonitoringECSInstanceRole"
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -31,7 +31,7 @@ resource "aws_iam_policy" "ecs_instance_policy" {
 
 resource "aws_iam_role_policy_attachment" "ecs_instance_role_att" {
   policy_arn = aws_iam_policy.ecs_instance_policy.arn
-  role       = aws_iam_role.ecs_instance_role.name
+  role = aws_iam_role.ecs_instance_role.name
 }
 
 
@@ -41,7 +41,7 @@ resource "aws_iam_role_policy_attachment" "ecs_instance_role_att" {
 ###########################################################
 resource "aws_iam_role" "ecs_service_role" {
 
-  name ="MonitoringECSServiceRole"
+  name = "MonitoringECSServiceRole"
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -59,10 +59,10 @@ EOF
 }
 
 resource "aws_iam_policy" "ecs_service_policy" {
-  name = "MonitoringECSServiceRolePolicy"
+  name        = "MonitoringECSServiceRolePolicy"
   description = "Policy to access ECR, EC2 and Logs"
-  path = "/"
-  policy = data.template_file.ecs_service_policy_template.rendered
+  path        = "/"
+  policy      = data.template_file.ecs_service_policy_template.rendered
 }
 
 
@@ -77,7 +77,7 @@ resource "aws_iam_role_policy_attachment" "ecs_service_role_att" {
 ###########################################################
 resource "aws_iam_role" "ecs_task_execution_role" {
 
-  name ="MonitoringECSTaskExecutionRole"
+  name               = "MonitoringECSTaskExecutionRole"
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -103,7 +103,7 @@ resource "aws_iam_policy" "ecs_task_execution_role_policy" {
 
 resource "aws_iam_role_policy_attachment" "ecs_task_policy_role_att" {
   policy_arn = aws_iam_policy.ecs_task_execution_role_policy.arn
-  role       = aws_iam_role.ecs_task_execution_role.name
+  role = aws_iam_role.ecs_task_execution_role.name
 }
 
 

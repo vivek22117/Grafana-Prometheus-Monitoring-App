@@ -43,18 +43,6 @@ variable "max_image_count" {
   description = "Total number of images allowed in ECR"
 }
 
-variable "ecr_readonly_access_accounts" {
-  type        = list(string)
-  description = "Principal ARNs to provide with readonly access to the ECR"
-  default     = []
-}
-
-variable "ecr_full_access_accounts" {
-  type        = string
-  description = "Principal ARNs to provide with full access to the ECR"
-}
-
-
 
 ####################################
 # Local variables                  #

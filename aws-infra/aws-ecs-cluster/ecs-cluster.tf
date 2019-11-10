@@ -1,5 +1,5 @@
 resource "aws_cloudwatch_log_group" "monitoring_log_group" {
-  name = var.log_group_name
+  name              = var.log_group_name
   retention_in_days = var.log_retention_days
 
   tags = merge(local.common_tags, map("Name", "monitoring-log-group"))
@@ -11,39 +11,34 @@ resource "aws_ecs_cluster" "monitoring_ecs_cluster" {
   tags = merge(local.common_tags, map("Name", "monitoring-ecs-cluster"))
 }
 
-resource "aws_ecs_task_definition" "grafana_task_def" {
-  container_definitions = data.template_file.grafana_task.rendered
-  family = "${var.environment}_grafana"
+resource "aws_ecs_task_definition" "grafana_prometheus_task_def" {
+  container_definitions = data.template_file.grafana_prometheus_task.rendered
+  family                = "${var.environment}_grafana_prometheus"
 
   requires_compatibilities = ["EC2"]
-  network_mode = var.ecs_task_mode
-  cpu = var.grafana_cpu
-  memory = var.grafana_memory
-  execution_role_arn = aws_iam_role.ecs_task_execution_role.arn
-  task_role_arn = aws_iam_role.ecs_task_execution_role.arn
+  network_mode             = var.ecs_task_mode
+  execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
+  task_role_arn            = aws_iam_role.ecs_task_execution_role.arn
 
-  tags = merge(local.common_tags, map("Name", "Grafana-Task"))
+  tags = merge(local.common_tags, map("Name", "Prometheus-Grafana-Task"))
 }
 
-resource "aws_ecs_task_definition" "prometheus_task_def" {
-  container_definitions = data.template_file.prometheus_task
-  family = "${var.environment}_prometheus"
 
-  requires_compatibilities = ["EC2"]
-  network_mode = var.ecs_task_mode
-  cpu = var.prometheus_cpu
-  memory = var.prometheus_memory
-  execution_role_arn = aws_iam_role.ecs_task_execution_role.arn
-  task_role_arn = aws_iam_role.ecs_task_execution_role.arn
+resource "aws_ecs_service" "monitoring_ecs_service" {
+  depends_on = [aws_iam_role.ecs_service_role, aws_iam_role.ecs_instance_role, aws_iam_role.ecs_task_execution_role]
 
-  tags = merge(local.common_tags, map("Name", "Prometheus-Task"))
+  name            = "${var.component_name}-ecs-service"
+  iam_role        = aws_iam_role.ecs_service_role.name
+  cluster         = aws_ecs_cluster.monitoring_ecs_cluster.id
+  task_definition = aws_ecs_task_definition.grafana_prometheus_task_def.arn
+  desired_count   = 2
 }
 
 resource "aws_launch_template" "ecs_cluster_monitoring_app_lt" {
-  name_prefix            = "${var.component_name}-${var.environment}"
-  image_id               = data.aws_ami.ecs-node-ami
-  instance_type          = var.instance_type
-  key_name               = var.key_name
+  name_prefix   = "${var.component_name}-${var.environment}"
+  image_id      = data.aws_ami.ecs-node-ami
+  instance_type = var.instance_type
+  key_name      = var.key_name
 
   user_data = base64encode(data.template_file.ec2_user_data.rendered)
 
@@ -62,10 +57,10 @@ resource "aws_launch_template" "ecs_cluster_monitoring_app_lt" {
   }
 
   network_interfaces {
-    device_index = 0
+    device_index                = 0
     associate_public_ip_address = false
-    security_groups = [aws_security_group.ecs_instance_sg.id]
-    delete_on_termination = true
+    security_groups             = [aws_security_group.ecs_instance_sg.id]
+    delete_on_termination       = true
   }
 
   placement {
@@ -92,7 +87,7 @@ resource "aws_alb" "ecs_monitoring_alb" {
   load_balancer_type = "application"
   subnets            = data.terraform_remote_state.vpc.outputs.public_subnets
   internal           = "false"
-  security_groups = [aws_security_group.ecs_alb_sg.id]
+  security_groups    = [aws_security_group.ecs_alb_sg.id]
 
   tags = {
     Name = "${var.component_name}-${var.environment}-alb"
@@ -111,7 +106,7 @@ resource "aws_lb_listener" "ecs_alb_listener" {
 }
 
 resource "aws_alb_listener_rule" "ecs_alb_listener_rule" {
-  depends_on   = ["aws_lb_target_group.ecs_alb_target_group"]
+  depends_on = ["aws_lb_target_group.ecs_alb_target_group"]
 
   listener_arn = aws_lb_listener.ecs_alb_listener.arn
   priority     = "100"
@@ -127,10 +122,10 @@ resource "aws_alb_listener_rule" "ecs_alb_listener_rule" {
 }
 
 resource "aws_lb_target_group" "ecs_alb_target_group" {
-  name     = "${var.component_name}-${var.environment}-tg"
-  port     = var.target_group_port
-  protocol = "HTTP"
-  vpc_id   = data.terraform_remote_state.vpc.outputs.vpc_id
+  name        = "${var.component_name}-${var.environment}-tg"
+  port        = var.target_group_port
+  protocol    = "HTTP"
+  vpc_id      = data.terraform_remote_state.vpc.outputs.vpc_id
   target_type = "instance"
 
   tags = {
@@ -138,8 +133,8 @@ resource "aws_lb_target_group" "ecs_alb_target_group" {
   }
 
   health_check {
-    enabled = true
-    protocol = "HTTP"
+    enabled             = true
+    protocol            = "HTTP"
     healthy_threshold   = 5
     unhealthy_threshold = 5
     timeout             = 5
@@ -170,22 +165,13 @@ resource "aws_autoscaling_group" "ecs_monitoring_cluster_asg" {
 
   default_cooldown = var.default_cooldown
 
-  tag {
-    key                 = "Name"
-    value               = var.app_instance_name
-    propagate_at_launch = true
-  }
-
-  tag {
-    key                 = "owner"
-    value               = local.common_tags.owner
-    propagate_at_launch = true
-  }
-
-  tag {
-    key                 = "team"
-    value               = local.common_tags.team
-    propagate_at_launch = true
+  dynamic "tag" {
+    for_each = var.custom_tags
+    content {
+      key                 = tag.key
+      value               = tag.value
+      propagate_at_launch = true
+    }
   }
 
   lifecycle {

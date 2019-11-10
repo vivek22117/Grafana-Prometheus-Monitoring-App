@@ -5,7 +5,7 @@ variable "profile" {
 }
 
 variable "default_region" {
-  type = string
+  type        = string
   description = "AWS region to deploy our resources"
 }
 
@@ -29,67 +29,57 @@ variable "component_name" {
 # ECS Variables                 #
 #################################
 variable "log_retention_days" {
-  type = number
+  type        = number
   description = "Number of days to retain cloudwatch logs"
 }
 
 variable "log_group_name" {
-  type = string
+  type        = string
   description = "Log group name for logs"
 }
 
 variable "grafana_memory" {
-  type = number
+  type        = number
   description = "Grafana memory allocation"
 }
 
 variable "grafana_cpu" {
-  type = number
+  type        = number
   description = "Grafana cpu allocation"
 }
 
 variable "prometheus_cpu" {
-  type = number
+  type        = number
   description = "Prometheus CPU allocation"
 }
 
 variable "prometheus_memory" {
-  type = number
+  type        = number
   description = "Prometheus memory allocation"
 }
 
 variable "grafana_image" {
-  type = string
+  type        = string
   description = "Grafana image from Docker"
 }
 
 variable "ecs_task_mode" {
-  type = string
+  type        = string
   description = "ECS task network mode"
 }
 
-variable "ecs_task_cpu" {
-  type = number
-  description = "ECS grafana task cpu allocation"
-}
-
-variable "ecs_task_memory" {
-  type = number
-  description = "ECS grafana task memory allocation"
-}
-
 variable "bucket_name" {
-  type = string
+  type        = string
   description = "Bucket to be accessed by ECS"
 }
 
 variable "instance_type" {
-  type = string
+  type        = string
   description = "EC2 instance type to be used for provisioning"
 }
 
 variable "key_name" {
-  type = string
+  type        = string
   description = "EC2 key pair name"
 }
 
@@ -104,7 +94,7 @@ variable "volume_size" {
 }
 
 variable "target_group_port" {
-  type = number
+  type        = number
   description = "Target group port for ECS Cluster"
 }
 
@@ -139,7 +129,7 @@ variable "rsvp_asg_wait_for_elb_capacity" {
 }
 
 variable "default_cooldown" {
-  type = number
+  type        = number
   description = "Cooldown value of ASG"
 }
 
@@ -161,11 +151,23 @@ variable "wait_for_capacity_timeout" {
 #  Default Variables            #
 #################################
 variable "s3_bucket_prefix" {
-  type = string
+  type        = string
   description = "S3 deployment bucket prefix"
-  default = "teamconcept-tfstate"
+  default     = "teamconcept-tfstate"
 }
 
+#####=============ASG Standards Tags===============#####
+variable "custom_tags" {
+  description = "Custom tags to set on the Instances in the ASG"
+  type        = map(string)
+  default = {
+    owner      = "vivek"
+    team       = "doubledigit-solutions"
+    tool       = "Terraform"
+    monitoring = "true"
+    Name       = "Monitoring-App"
+  }
+}
 
 ####################################
 # Local variables                  #
