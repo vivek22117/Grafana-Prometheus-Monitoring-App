@@ -6,7 +6,7 @@ data "terraform_remote_state" "vpc" {
   backend = "s3"
 
   config = {
-    profile = "doubledigit"
+    profile = "admin"
     bucket  = "${var.s3_bucket_prefix}-${var.environment}-${var.default_region}"
     key     = "state/${var.environment}/vpc/terraform.tfstate"
     region  = var.default_region
@@ -20,21 +20,17 @@ data "terraform_remote_state" "backend" {
   config = {
     profile = var.profile
     bucket  = "${var.s3_bucket_prefix}-${var.environment}-${var.default_region}"
-    key     = "state/${var.environment}/aws/terraform.tfstate"
+    key     = "state/${var.environment}/backend/terraform.tfstate"
     region  = var.default_region
   }
 }
 
 data "template_file" "ecs_instance_policy_template" {
   template = file("${path.module}/policy-doc/ecs-ec2-policy.json")
-
-  vars = {
-    bucket_name = var.bucket_name
-  }
 }
 
 data "template_file" "ec2_user_data" {
-  template = file("${path.module}/scripts/ec2-user-data.sh")
+  template = file("${path.module}/scripts/ec2-user-data-temp.sh")
 
   vars = {
     healt_monitoring_cluster = aws_ecs_cluster.monitoring_ecs_cluster.name
@@ -75,10 +71,6 @@ data "template_file" "grafana_prometheus_task" {
     prometheus_image  = data.terraform_remote_state.monitoring_ecr_state.outputs.ecr_registry_url
     log_group         = aws_cloudwatch_log_group.monitoring_log_group.name
     aws_region        = var.default_region
-    grafana_memory    = var.grafana_memory
-    prometheus_memory = var.prometheus_memory
-    grafana_cpu       = var.grafana_cpu
-    prometheus_cpu    = var.prometheus_cpu
   }
 }
 

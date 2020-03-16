@@ -1,9 +1,9 @@
 [
   {
     "Image": "${grafana_image}",
-    "Memory": "${grafana_memory}",
+    "Memory": 256,
     "Name": "Grafana-Container",
-    "cpu": "${grafana_cpu}",
+    "cpu": 10,
     "LogConfiguration": {
       "LogDriver": "awslogs",
       "Options": {
@@ -15,7 +15,6 @@
     "PortMappings": [
       {
         "ContainerPort": 3000,
-        "HostPort": 3000,
         "Protocol": "tcp"
       }
     ],
@@ -28,9 +27,9 @@
   },
   {
     "Image": "${prometheus_image}",
-    "Memory": "${prometheus_memory}",
+    "Memory": 256,
     "Name": "Prometheus-monitoring",
-    "cpu": "${prometheus_cpu}",
+    "cpu": 10,
     "LogConfiguration": {
       "LogDriver": "awslogs",
       "Options": {
@@ -42,7 +41,6 @@
     "PortMappings": [
       {
         "ContainerPort": 9090,
-        "HostPort": 9090,
         "Protocol": "tcp"
       }
     ]

@@ -1,7 +1,8 @@
 resource "aws_ecr_repository" "monitoring_app_ecr" {
   count = var.enabled ? 1 : 0
-  name  = var.repo_name
-  tags  = merge(local.common_tags, map("Name", "monitoring-ecr-repo"))
+
+  name = var.repo_name
+  tags = merge(local.common_tags, map("Name", "monitoring-ecr-repo"))
 }
 
 resource "aws_ecr_lifecycle_policy" "monitoring_app_lifecycle" {
@@ -44,5 +45,5 @@ resource "aws_ecr_repository_policy" "monitoring_app_ecr_policy" {
   depends_on = [data.aws_iam_policy_document.ecr_access_policy]
 
   repository = join("", aws_ecr_repository.monitoring_app_ecr.*.name)
-  policy = join("", data.aws_iam_policy_document.ecr_access_policy.*.json)
+  policy     = join("", data.aws_iam_policy_document.ecr_access_policy.*.json)
 }

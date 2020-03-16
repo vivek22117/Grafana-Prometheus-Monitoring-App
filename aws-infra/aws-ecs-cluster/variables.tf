@@ -11,7 +11,7 @@ variable "default_region" {
 
 variable "environment" {
   type        = string
-  description = "AWS Profile name for credentials"
+  description = "Environment to be configured 'dev', 'qa', 'prod'"
 }
 
 variable "owner_team" {
@@ -28,6 +28,16 @@ variable "component_name" {
 #################################
 # ECS Variables                 #
 #################################
+variable "service_launch_type" {
+  type = string
+  description = "The launch type, can be EC2 or FARGATE"
+}
+
+variable "service_desired_count" {
+  type = number
+  description = "The number of instances of the task definition to place and keep running."
+}
+
 variable "log_retention_days" {
   type        = number
   description = "Number of days to retain cloudwatch logs"
@@ -36,26 +46,6 @@ variable "log_retention_days" {
 variable "log_group_name" {
   type        = string
   description = "Log group name for logs"
-}
-
-variable "grafana_memory" {
-  type        = number
-  description = "Grafana memory allocation"
-}
-
-variable "grafana_cpu" {
-  type        = number
-  description = "Grafana cpu allocation"
-}
-
-variable "prometheus_cpu" {
-  type        = number
-  description = "Prometheus CPU allocation"
-}
-
-variable "prometheus_memory" {
-  type        = number
-  description = "Prometheus memory allocation"
 }
 
 variable "grafana_image" {
@@ -84,12 +74,12 @@ variable "key_name" {
 }
 
 variable "max_price" {
-  type        = "string"
+  type        = string
   description = "Spot price for EC2 instance"
 }
 
 variable "volume_size" {
-  type        = "string"
+  type        = string
   description = "Volume size"
 }
 
@@ -99,32 +89,32 @@ variable "target_group_port" {
 }
 
 variable "rsvp_asg_max_size" {
-  type        = "string"
+  type        = string
   description = "ASG max size"
 }
 
 variable "rsvp_asg_min_size" {
-  type        = "string"
+  type        = string
   description = "ASG min size"
 }
 
 variable "rsvp_asg_desired_capacity" {
-  type        = "string"
+  type        = string
   description = "ASG desired capacity"
 }
 
 variable "rsvp_asg_health_check_grace_period" {
-  type        = "string"
+  type        = string
   description = "ASG health check grace period"
 }
 
 variable "health_check_type" {
-  type        = "string"
+  type        = string
   description = "ASG health check type"
 }
 
 variable "rsvp_asg_wait_for_elb_capacity" {
-  type        = "string"
+  type        = string
   description = "ASG waith for ELB capacity"
 }
 
@@ -153,7 +143,7 @@ variable "wait_for_capacity_timeout" {
 variable "s3_bucket_prefix" {
   type        = string
   description = "S3 deployment bucket prefix"
-  default     = "teamconcept-tfstate"
+  default     = "doubledigit-tfstate"
 }
 
 #####=============ASG Standards Tags===============#####

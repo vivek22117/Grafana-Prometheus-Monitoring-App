@@ -31,12 +31,21 @@ resource "aws_ecs_service" "monitoring_ecs_service" {
   iam_role        = aws_iam_role.ecs_service_role.name
   cluster         = aws_ecs_cluster.monitoring_ecs_cluster.id
   task_definition = aws_ecs_task_definition.grafana_prometheus_task_def.arn
-  desired_count   = 2
+  desired_count   = var.service_desired_count
+
+  launch_type = var.service_launch_type
+
+  load_balancer {
+    target_group_arn = aws_lb_target_group.ecs_alb_target_group.arn
+    container_name   = "Grafana-Container"
+    container_port   = "3000"
+  }
 }
 
 resource "aws_launch_template" "ecs_cluster_monitoring_app_lt" {
-  name_prefix   = "${var.component_name}-${var.environment}"
-  image_id      = data.aws_ami.ecs-node-ami
+  name_prefix = "${var.component_name}-${var.environment}"
+
+  image_id      = data.aws_ami.ecs-node-ami.id
   instance_type = var.instance_type
   key_name      = var.key_name
 
@@ -83,7 +92,8 @@ resource "aws_launch_template" "ecs_cluster_monitoring_app_lt" {
 }
 
 resource "aws_alb" "ecs_monitoring_alb" {
-  name               = "${var.component_name}-alb"
+  name = "${var.component_name}-alb"
+
   load_balancer_type = "application"
   subnets            = data.terraform_remote_state.vpc.outputs.public_subnets
   internal           = "false"
@@ -106,7 +116,7 @@ resource "aws_lb_listener" "ecs_alb_listener" {
 }
 
 resource "aws_alb_listener_rule" "ecs_alb_listener_rule" {
-  depends_on = ["aws_lb_target_group.ecs_alb_target_group"]
+  depends_on = [aws_lb_target_group.ecs_alb_target_group]
 
   listener_arn = aws_lb_listener.ecs_alb_listener.arn
   priority     = "100"
@@ -116,13 +126,15 @@ resource "aws_alb_listener_rule" "ecs_alb_listener_rule" {
     target_group_arn = aws_lb_target_group.ecs_alb_target_group.arn
   }
   condition {
-    field  = "path-pattern"
-    values = ["/"]
+    path_pattern {
+      values = ["/"]
+    }
   }
 }
 
 resource "aws_lb_target_group" "ecs_alb_target_group" {
-  name        = "${var.component_name}-${var.environment}-tg"
+  name = "${var.component_name}-${var.environment}-tg"
+
   port        = var.target_group_port
   protocol    = "HTTP"
   vpc_id      = data.terraform_remote_state.vpc.outputs.vpc_id
