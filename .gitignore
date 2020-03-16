@@ -7,3 +7,17 @@
 
 # .tfvars files
 *.tfvars
+
+
+# Intellij
+.idea/libraries/*.xml
+*.iml
+*.iws
+.idea/*
+
+.idea
+
+target/
+
+
+/target/**
