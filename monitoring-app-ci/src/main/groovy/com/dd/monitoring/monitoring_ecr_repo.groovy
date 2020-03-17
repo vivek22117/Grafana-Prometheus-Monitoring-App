@@ -1,4 +1,4 @@
-package com.dd.monitoring.scripts
+package com.dd.monitoring
 
 import com.dd.monitoring.builder.MonitoringECRJobBuilder
 import javaposse.jobdsl.dsl.JobParent
