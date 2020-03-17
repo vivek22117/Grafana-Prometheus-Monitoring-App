@@ -1,4 +1,4 @@
-package com.dd.monitoring.scripts
+package com.dd.monitoring.builder
 
 import javaposse.jobdsl.dsl.DslFactory
 import javaposse.jobdsl.dsl.Job
