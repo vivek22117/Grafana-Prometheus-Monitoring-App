@@ -1,6 +1,6 @@
 package com.dd.monitoring.scripts
 
-import com.dd.monitoring.builder.MonitoringECRJobBuilder
+
 import javaposse.jobdsl.dsl.JobParent
 
 def factory = this as JobParent
