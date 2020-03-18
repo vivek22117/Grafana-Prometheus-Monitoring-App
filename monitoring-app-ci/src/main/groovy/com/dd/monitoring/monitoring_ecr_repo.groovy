@@ -16,8 +16,8 @@ def githubUrl = "https://github.com/vivek22117/Grafana-Prometheus-Monitoring-App
 new MonitoringECRJobBuilder(
         dslFactory: factory,
         description: description,
-        jobName: component + "-"+ listOfEnvironment.get(0),
-        displayName: displayName,
+        jobName: component + "-" + listOfEnvironment.get(0),
+        displayName: displayName + listOfEnvironment.get(0),
         branchesName: branchesName,
         githubUrl: githubUrl,
         credentialId: 'github',
@@ -28,8 +28,8 @@ new MonitoringECRJobBuilder(
 new MonitoringECRJobBuilder(
         dslFactory: factory,
         description: description,
-        jobName: component + "-"+ listOfEnvironment.get(1),
-        displayName: displayName,
+        jobName: component + "-" + listOfEnvironment.get(1),
+        displayName: displayName + listOfEnvironment.get(1),
         branchesName: branchesName,
         githubUrl: githubUrl,
         credentialId: 'github',
