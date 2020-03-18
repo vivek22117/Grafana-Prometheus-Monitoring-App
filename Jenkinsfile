@@ -37,7 +37,7 @@ pipeline {
             steps {
                 dir('aws-infra/aws-ecr-infra/') {
                     script {
-                        sh "terraform plan -var 'environment=${ENVIRONMENT}' -out monitoring-app-ecr-repo.tfplan; echo \$? > status"
+                        sh "terraform plan -var 'environment=${NODE_NAME}' -out monitoring-app-ecr-repo.tfplan; echo \$? > status"
                         def exitCode = readFile('status').trim()
                         echo "Terraform Plan Exit Code: ${exitCode}"
                         stash name: "monitoring-app-ecr-repo-plan", includes: "monitoring-app-ecr-repo.tfplan"
@@ -116,7 +116,7 @@ pipeline {
                     script {
                         input message: 'Destroy Plan?', ok: 'Destroy'
                         sh "echo destroying the AWS infra....."
-                        sh "terraform destroy -var 'environment=${ENVIRONMENT}' -auto-approve"
+                        sh "terraform destroy -var 'environment=${NODE_NAME}' -auto-approve"
                     }
                 }
             }
