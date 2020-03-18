@@ -5,10 +5,6 @@
 *.tfstate
 *.tfstate.*
 
-# .tfvars files
-*.tfvars
-
-
 # Intellij
 .idea/libraries/*.xml
 *.iml
