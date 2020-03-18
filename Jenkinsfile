@@ -89,7 +89,7 @@ pipeline {
                         echo 'Environment:' $ENVIRONMENT
 
                         echo 'login to ecr started'
-                        $(aws ecr get-login --no-include-email --region us-east-1)
+                        sh(script: "aws ecr get-login --no-include-email --region us-east-1", returnStdout: true)
                         echo 'logged in successfully'
 
                         echo 'Building the docker image'
