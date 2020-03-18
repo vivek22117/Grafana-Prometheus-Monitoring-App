@@ -119,7 +119,8 @@ pipeline {
                     script {
                         input message: 'Destroy Plan?', ok: 'Destroy'
                         sh "echo destroying the AWS infra....."
-                        sh "terraform destroy -var 'environment=${ENVIRONMENT}' -auto-approve"
+                        unstash "monitoring-app-ecr-repo-plan"
+                        sh "terraform destroy monitoring-app-ecr-repo.tfplan -auto-approve"
                     }
                 }
             }
