@@ -33,12 +33,15 @@ resource "aws_ecs_service" "monitoring_ecs_service" {
   task_definition = aws_ecs_task_definition.grafana_prometheus_task_def.arn
   desired_count   = var.service_desired_count
 
+  deployment_maximum_percent = 200
+  deployment_minimum_healthy_percent = 70
+
   launch_type = var.service_launch_type
 
   load_balancer {
     target_group_arn = aws_lb_target_group.ecs_alb_target_group.arn
     container_name   = "Grafana-Container"
-    container_port   = "3000"
+    container_port   = 3000
   }
 }
 

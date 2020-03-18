@@ -18,7 +18,7 @@
       },
       "tags": {
         "Tool": "Packer",
-        "Purpose": "ECS-Server",
+        "Name": "ECS-Server-AMI",
         "Author": "vivek"
       }
     }

@@ -4,7 +4,7 @@ import com.dd.monitoring.builder.MonitoringECRJobBuilder
 import javaposse.jobdsl.dsl.JobParent
 
 def factory = this as JobParent
-def listOfEnvironment = ["dev", "prod"]
+def listOfEnvironment = ["dev", "qa", "prod"]
 def component = "monitoring-ecr-repo-job"
 
 def description = "Pipeline DSL to create ECR repository and build Docker image!"
@@ -21,7 +21,7 @@ new MonitoringECRJobBuilder(
         branchesName: branchesName,
         githubUrl: githubUrl,
         credentialId: 'github',
-        environment: 'dev'
+        environment: listOfEnvironment.get(0)
 ).build()
 
 
@@ -29,9 +29,21 @@ new MonitoringECRJobBuilder(
         dslFactory: factory,
         description: description,
         jobName: component + "-" + listOfEnvironment.get(1),
-        displayName: displayName + " "+ listOfEnvironment.get(1),
+        displayName: displayName + " " + listOfEnvironment.get(1),
         branchesName: branchesName,
         githubUrl: githubUrl,
         credentialId: 'github',
-        environment: 'prod'
+        environment: listOfEnvironment.get(1)
+).build()
+
+
+new MonitoringECRJobBuilder(
+        dslFactory: factory,
+        description: description,
+        jobName: component + "-" + listOfEnvironment.get(2),
+        displayName: displayName + " "+ listOfEnvironment.get(2),
+        branchesName: branchesName,
+        githubUrl: githubUrl,
+        credentialId: 'github',
+        environment: listOfEnvironment.get(2)
 ).build()
