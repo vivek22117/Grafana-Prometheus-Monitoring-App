@@ -86,7 +86,7 @@ pipeline {
                         def AWS_ACCOUNT_ID = sh(script: "aws sts get-caller-identity --query 'Account' --output text", returnStdout: true).trim()
                         print("AWS ACCOUNT = ${AWS_ACCOUNT_ID}")
 
-                        def IMAGE_TAG = sh(script: "`date +%s`", returnStdout: true).trim()
+                        def IMAGE_TAG = sh(script: 'date +%s', returnStdout: true).trim()
                         print("IMAGE_TAG =  ${IMAGE_TAG}")
 
                         echo 'login to ecr started'
