@@ -82,7 +82,7 @@ pipeline {
                     script {
                         echo 'Job to push Docker Image to Elastic Container Repository'
                         sudo docker --version
-                        aws --version
+                        sh "aws --version"
                         IMAGE_TAG=$(date %s)
 
                         echo 'AWS Account:' $AWS_ACCOUNT_ID
