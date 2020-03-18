@@ -33,19 +33,6 @@ pipeline {
                 }
             }
         }
-        stage('tf-plan') {
-            steps {
-                dir('aws-infra/aws-ecr-infra/') {
-                    script {
-                        sh "terraform plan -var 'environment=${ENVIRONMENT}' \
-                         -var-file='${ENVIRONMENT}.tfvars' -out monitoring-app-ecr-repo.tfplan; echo \$? > status"
-                        def exitCode = readFile('status').trim()
-                        echo "Terraform Plan Exit Code: ${exitCode}"
-                        stash name: "monitoring-app-ecr-repo-plan", includes: "monitoring-app-ecr-repo.tfplan"
-                    }
-                }
-            }
-        }
         stage('destroy') {
             when {
                 expression {
@@ -57,7 +44,26 @@ pipeline {
                     script {
                         input message: 'Destroy Plan?', ok: 'Destroy'
                         sh "echo destroying the AWS infra....."
-                        sh "terraform destroy -var 'environment=${ENVIRONMENT}' -auto-approve"
+                        sh "terraform destroy -var 'environment=${ENVIRONMENT}' \
+                         -var-file='${ENVIRONMENT}.tfvars' -auto-approve"
+                    }
+                }
+            }
+        }
+        stage('tf-plan') {
+            when {
+                expression {
+                    "${params.AWS_INFRA_ACTION}" == "create"
+                }
+            }
+            steps {
+                dir('aws-infra/aws-ecr-infra/') {
+                    script {
+                        sh "terraform plan -var 'environment=${ENVIRONMENT}' \
+                         -var-file='${ENVIRONMENT}.tfvars' -out monitoring-app-ecr-repo.tfplan; echo \$? > status"
+                        def exitCode = readFile('status').trim()
+                        echo "Terraform Plan Exit Code: ${exitCode}"
+                        stash name: "monitoring-app-ecr-repo-plan", includes: "monitoring-app-ecr-repo.tfplan"
                     }
                 }
             }
