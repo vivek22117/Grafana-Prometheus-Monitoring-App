@@ -83,7 +83,7 @@ pipeline {
                         echo 'Job to push Docker Image to Elastic Container Repository'
                         sh 'docker --version'
                         AWS_ACCOUNT_ID=sh(script: "aws sts get-caller-identity --query 'Account' --output text", returnStdout: true)
-                        echo 'AWS Account:' $AWS_ACCOUNT_ID
+                        echo 'AWS Account:' ${AWS_ACCOUNT_ID}
                         IMAGE_TAG=sh(script: "`date +%s`", returnStdout: true).trim()
                         echo 'Environment:' $ENVIRONMENT
 
