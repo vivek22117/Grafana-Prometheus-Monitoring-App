@@ -11,7 +11,7 @@ terraform.tfvars
 *.iml
 *.iws
 .idea/*
-
+*.xml
 .idea
 
 target/
