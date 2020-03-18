@@ -90,7 +90,8 @@ pipeline {
                         print("IMAGE_TAG =  ${IMAGE_TAG}")
 
                         echo 'login to ecr started'
-                        eval sh(script: "aws ecr get-login --no-include-email --region us-east-1", returnStdout: true)
+                        // sh(script: "aws ecr get-login --no-include-email --region us-east-1", returnStdout: true)
+                        sh("sudo $(aws ecr get-login --no-include-email --region us-east-1)")
                         echo 'logged in successfully'
 
                         echo 'Building the docker image'
