@@ -79,7 +79,6 @@ pipeline {
                 }
             }
             steps {
-                dir('/') {
                     script {
                         echo 'Job to push Docker Image to Elastic Container Repository'
                         sh "aws --version"
@@ -104,7 +103,6 @@ pipeline {
                         echo $IMAGE_TAG ' Image pushed to ECR'
 
                     }
-                }
             }
         }
         stage('destroy') {
