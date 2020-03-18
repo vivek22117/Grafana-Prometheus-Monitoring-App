@@ -98,11 +98,11 @@ pipeline {
                         echo 'Image built successfully'
 
                         // tag the image
-                        sh 'sudo docker tag infra-monitoring-app:latest $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/infra-monitoring-app:$IMAGE_TAG'
+                        sh 'sudo docker tag infra-monitoring-app:latest ${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/infra-monitoring-app:${IMAGE_TAG}'
 
                         echo 'Pushing image to ECR'
-                        sh 'sudo docker push $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/infra-monitoring-app:$IMAGE_TAG'
-                        echo $IMAGE_TAG ' Image pushed to ECR'
+                        sh 'sudo docker push ${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/infra-monitoring-app:${IMAGE_TAG}'
+                        echo ${IMAGE_TAG} ' Image pushed to ECR'
 
                     }
             }
