@@ -37,7 +37,7 @@ pipeline {
             steps {
                 dir('aws-infra/aws-ecr-infra/') {
                     script {
-                        sh "terraform plan -var 'environment=${ENVIRONMENT}'/
+                        sh "terraform plan -var 'environment=${ENVIRONMENT}' \
                          -var-file='${ENVIRONMENT}.tfvars' -out monitoring-app-ecr-repo.tfplan; echo \$? > status"
                         def exitCode = readFile('status').trim()
                         echo "Terraform Plan Exit Code: ${exitCode}"
