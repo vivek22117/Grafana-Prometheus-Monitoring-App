@@ -82,9 +82,10 @@ pipeline {
                 dir('/') {
                     script {
                         echo 'Job to push Docker Image to Elastic Container Repository'
-                        sudo docker --version
                         sh "aws --version"
                         IMAGE_TAG=$(date %s)
+                        echo $IMAGE_TAG
+                        sh "docker --version"
 
                         echo 'Environment:' $ENVIRONMENT
 
