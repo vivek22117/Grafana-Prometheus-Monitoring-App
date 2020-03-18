@@ -85,11 +85,9 @@ pipeline {
                         sh "aws --version"
                         IMAGE_TAG=$(date %s)
 
-                        echo 'AWS Account:' $AWS_ACCOUNT_ID
                         echo 'Environment:' $ENVIRONMENT
 
                         echo 'login to ecr started'
-                        $(aws ecr get-login --no-include-email --region us-east-1)
                         echo 'logged in successfully'
 
                         echo 'Building the docker image'
@@ -98,11 +96,9 @@ pipeline {
                         echo 'Image built successfully'
 
                         #tag the image
-                        docker tag infra-monitoring-app:latest $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/infra-monitoring-app:$IMAGE_TAG
 
                         echo 'Pushing image to ECR'
                         #push image to ecr
-                        docker push $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/infra-monitoring-app:$IMAGE_TAG
                         echo $IMAGE_TAG ' Image pushed to ECR'
 
                     }
