@@ -91,14 +91,14 @@ pipeline {
                         echo 'logged in successfully'
 
                         echo 'Building the docker image'
-                        #build a docker image
+
                         docker build -t infra-monitoring-app .
                         echo 'Image built successfully'
 
-                        #tag the image
+
 
                         echo 'Pushing image to ECR'
-                        #push image to ecr
+
                         echo $IMAGE_TAG ' Image pushed to ECR'
 
                     }
