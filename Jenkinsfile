@@ -46,6 +46,22 @@ pipeline {
                 }
             }
         }
+        stage('destroy') {
+            when {
+                expression {
+                    "${params.AWS_INFRA_ACTION}" == "destroy"
+                }
+            }
+            steps {
+                dir('aws-infra/aws-ecr-infra/') {
+                    script {
+                        input message: 'Destroy Plan?', ok: 'Destroy'
+                        sh "echo destroying the AWS infra....."
+                        sh "terraform destroy -var 'environment=${ENVIRONMENT}' -auto-approve"
+                    }
+                }
+            }
+        }
         stage('tf-apply') {
             when {
                 expression {
@@ -106,23 +122,6 @@ pipeline {
                         echo "${IMAGE_TAG} ' Image pushed to ECR'"
 
                     }
-            }
-        }
-        stage('destroy') {
-            when {
-                expression {
-                    "${params.AWS_INFRA_ACTION}" == "destroy"
-                }
-            }
-            steps {
-                dir('aws-infra/aws-ecr-infra/') {
-                    script {
-                        input message: 'Destroy Plan?', ok: 'Destroy'
-                        sh "echo destroying the AWS infra....."
-                        unstash "monitoring-app-ecr-repo-plan"
-                        sh "terraform destroy monitoring-app-ecr-repo.tfplan -auto-approve"
-                    }
-                }
             }
         }
       }
