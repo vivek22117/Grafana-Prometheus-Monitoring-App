@@ -10,7 +10,6 @@ def displayName = "Monitoring ECR Repository Builder Job"
 def branchesName = "*/master"
 def githubUrl = "https://github.com/vivek22117/Grafana-Prometheus-Monitoring-App.git"
 
-
 new MonitoringECRJobBuilder(
         dslFactory: factory,
         description: description,

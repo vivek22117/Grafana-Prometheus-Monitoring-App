@@ -14,6 +14,7 @@ class MonitoringECRJobBuilder {
     String credentialId
     String environment
 
+
     Job build() {
         dslFactory.pipelineJob(jobName) {
             description(description)
@@ -34,7 +35,6 @@ class MonitoringECRJobBuilder {
                     }
                 }
             }
-            label(environment)
             parameters {
                 stringParam('ENVIRONMENT', environment)
             }
