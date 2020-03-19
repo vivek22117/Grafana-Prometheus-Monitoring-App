@@ -13,6 +13,7 @@ class MonitoringECRJobBuilder {
     String branchesName
     String credentialId
     String environment
+    String scriptPath
 
 
     Job build() {
@@ -30,7 +31,7 @@ class MonitoringECRJobBuilder {
                                 credentials(credentialId)
                             }
                         }
-                        scriptPath('Jenkinsfile')
+                        scriptPath(scriptPath)
                         lightweight(true)
                     }
                 }

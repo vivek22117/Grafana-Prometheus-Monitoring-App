@@ -1,0 +1,148 @@
+pipeline {
+    agent {
+        label 'dev'
+    }
+
+    options {
+        preserveStashes(buildCount: 10)
+        timeout(time: 20, unit: 'MINUTES')
+        skipStagesAfterUnstable()
+    }
+    parameters {
+        string(name: 'EMAIL_TO', defaultValue: 'vivekmishra22117@gmail.com', description: 'Email Id')
+        string(name: 'ENVIRONMENT', defaultValue: 'dev', description: 'Environment....')
+        choice(
+            choices: ['create', 'destroy'],
+            description: '',
+            name: 'AWS_INFRA_ACTION')
+    }
+    environment {
+        PATH = "${PATH}:${getTerraformPath()}"
+        EMAIL_TO = 'vivekmishra22117@gmail.com'
+    }
+
+    stages {
+        stage('tf-init') {
+            steps {
+                dir('aws-infra/aws-ecs-cluster/') {
+                    script {
+                        sh "terraform --version"
+                        sh "terraform init"
+                        sh "whoami"
+                    }
+                }
+            }
+        }
+        stage('destroy') {
+            when {
+                expression {
+                    "${params.AWS_INFRA_ACTION}" == "destroy"
+                }
+            }
+            steps {
+                dir('aws-infra/aws-ecs-cluster/') {
+                    script {
+                        input message: 'Destroy Plan?', ok: 'Destroy'
+                        sh "echo destroying the AWS infra....."
+                        sh "terraform destroy -var 'environment=${ENVIRONMENT}' \
+                         -var-file='${ENVIRONMENT}.tfvars' -auto-approve"
+                    }
+                }
+            }
+        }
+        stage('tf-plan') {
+            when {
+                expression {
+                    "${params.AWS_INFRA_ACTION}" == "create"
+                }
+            }
+            steps {
+                dir('aws-infra/aws-ecs-cluster/') {
+                    script {
+                        sh "terraform plan -var 'environment=${ENVIRONMENT}' \
+                         -var-file='${ENVIRONMENT}.tfvars' -out monitoring-app-ecs-cluster.tfplan; echo \$? > status"
+                        def exitCode = readFile('status').trim()
+                        echo "Terraform Plan Exit Code: ${exitCode}"
+                        stash name: "monitoring-app-ecs-cluster-plan", includes: "monitoring-app-ecs-cluster.tfplan"
+                    }
+                }
+            }
+        }
+        stage('tf-apply') {
+            when {
+                expression {
+                    "${params.AWS_INFRA_ACTION}" == "create"
+                }
+            }
+            steps {
+                dir('aws-infra/aws-ecs-cluster/') {
+                    script {
+                        def apply = false
+                        try {
+                            input message: 'confirm apply', ok: 'Apply config'
+                            apply = true;
+                        } catch (err) {
+                            apply = false
+                            sh "echo skipping the AWS infra creation....."
+                        }
+                        if (apply) {
+                            sh "echo creating AWS infra....."
+                            unstash "monitoring-app-ecs-cluster-plan"
+                            sh "terraform apply -auto-approve monitoring-app-ecs-cluster.tfplan"
+                        }
+                    }
+                }
+            }
+        }
+      }
+      post {
+             // Always runs. And it runs before any of the other post conditions.
+             always {
+               // Let's wipe out the workspace before we finish!
+               deleteDir()
+             }
+
+             success {
+              sendEmail('Successful')
+             }
+
+             failure {
+              sendEmail('Failed')
+             }
+      }
+}
+
+
+def sendEmail(status) {
+    mail(
+            to: "$EMAIL_TO",
+            subject: "Build ${env.BUILD_NUMBER} - " + status + " (${currentBuild.fullDisplayName})",
+            body: """<p>STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
+                     <p>Check console output at &QUOT;<a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>""")
+}
+
+def getTerraformPath() {
+    def tfHome = tool name: "Terraform", type: "org.jenkinsci.plugins.terraform.TerraformInstallation"
+    return tfHome
+}
+
+def getChangeString() {
+    MAX_MSG_LEN = 100
+    def changeString = ""
+
+    echo "Gathering SCM changes"
+    def changeLogSets = currentBuild.changeSets
+    for (int i = 0; i < changeLogSets.size(); i++) {
+        def entries = changeLogSets[i].items
+        for (int j = 0; j < entries.length; j++) {
+            def entry = entries[j]
+            truncated_msg = entry.msg.take(MAX_MSG_LEN)
+            changeString += " - ${truncated_msg} [${entry.author}]\n"
+        }
+    }
+
+    if (!changeString) {
+        changeString = " - No new changes"
+    }
+    return changeString
+}

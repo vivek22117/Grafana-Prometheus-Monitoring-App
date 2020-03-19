@@ -5,11 +5,11 @@ import javaposse.jobdsl.dsl.JobParent
 
 def factory = this as JobParent
 def listOfEnvironment = ["dev", "qa", "prod"]
-def component = "monitoring-ecr-repo-job"
+def component = "monitoring-ecs-cluster-job"
 
-def scriptPath = "jenkins/ecr-repo/Jenkinsfile"
-def description = "Pipeline DSL to create ECR repository and build Docker image!"
-def displayName = "Monitoring ECR Repository Builder Job"
+def scriptPath = "jenkins/ecs-cluster/Jenkinsfile"
+def description = "Pipeline DSL to create ECS Cluster, Load Balancer, ASG and Security groups!"
+def displayName = "Monitoring ECS Cluster Builder Job"
 def branchesName = "*/master"
 def githubUrl = "https://github.com/vivek22117/Grafana-Prometheus-Monitoring-App.git"
 
