@@ -1,4 +1,3 @@
 #!/usr/bin/env bash
 
-systemctl start docker
 echo ECS_CLUSTER=${healt_monitoring_cluster} >> /etc/ecs/ecs.config
