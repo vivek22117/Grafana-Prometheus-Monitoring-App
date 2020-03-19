@@ -7,7 +7,7 @@ def factory = this as JobParent
 def listOfEnvironment = ["dev", "qa", "prod"]
 def component = "monitoring-ecr-repo-job"
 
-def scriptPath = "jenkins/ecr-repo/Jenkinsfile"
+def scriptLocation = "jenkins/ecr-repo/Jenkinsfile"
 def description = "Pipeline DSL to create ECR repository and build Docker image!"
 def displayName = "Monitoring ECR Repository Builder Job"
 def branchesName = "*/master"
@@ -23,7 +23,7 @@ new MonitoringECRJobBuilder(
         githubUrl: githubUrl,
         credentialId: 'github',
         environment: listOfEnvironment.get(0),
-        scriptPath: scriptPath
+        scriptPath: scriptLocation
 ).build()
 
 
@@ -36,7 +36,7 @@ new MonitoringECRJobBuilder(
         githubUrl: githubUrl,
         credentialId: 'github',
         environment: listOfEnvironment.get(1),
-        scriptPath: scriptPath
+        scriptPath: scriptLocation
 ).build()
 
 
@@ -49,5 +49,5 @@ new MonitoringECRJobBuilder(
         githubUrl: githubUrl,
         credentialId: 'github',
         environment: listOfEnvironment.get(2),
-        scriptPath: scriptPath
+        scriptPath: scriptLocation
 ).build()

@@ -7,7 +7,7 @@ def factory = this as JobParent
 def listOfEnvironment = ["dev", "qa", "prod"]
 def component = "monitoring-ecs-cluster-job"
 
-def scriptPath = "jenkins/ecs-cluster/Jenkinsfile"
+def scriptLocation = "jenkins/ecs-cluster/Jenkinsfile"
 def description = "Pipeline DSL to create ECS Cluster, Load Balancer, ASG and Security groups!"
 def displayName = "Monitoring ECS Cluster Builder Job"
 def branchesName = "*/master"
@@ -23,7 +23,7 @@ new MonitoringECRJobBuilder(
         githubUrl: githubUrl,
         credentialId: 'github',
         environment: listOfEnvironment.get(0),
-        scriptPath: scriptPath
+        scriptPath: scriptLocation
 ).build()
 
 
@@ -36,7 +36,7 @@ new MonitoringECRJobBuilder(
         githubUrl: githubUrl,
         credentialId: 'github',
         environment: listOfEnvironment.get(1),
-        scriptPath: scriptPath
+        scriptPath: scriptLocation
 ).build()
 
 
@@ -49,5 +49,5 @@ new MonitoringECRJobBuilder(
         githubUrl: githubUrl,
         credentialId: 'github',
         environment: listOfEnvironment.get(2),
-        scriptPath: scriptPath
+        scriptPath: scriptLocation
 ).build()
