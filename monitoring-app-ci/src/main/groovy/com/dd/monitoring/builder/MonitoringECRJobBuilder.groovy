@@ -37,6 +37,10 @@ class MonitoringECRJobBuilder {
             }
             parameters {
                 stringParam('ENVIRONMENT', environment)
+                nodeParam(environment) {
+                    description('Select the node to execute the job!')
+                    defaultNodes(['dev'])
+                }
             }
         }
     }
