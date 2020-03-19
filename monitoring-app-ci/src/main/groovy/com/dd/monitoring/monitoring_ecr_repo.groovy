@@ -7,7 +7,7 @@ def factory = this as JobParent
 def listOfEnvironment = ["dev", "qa", "prod"]
 def component = "monitoring-ecr-repo-job"
 
-def scriptLocation = "jenkins/ecr-repo/Jenkinsfile"
+def scriptLocation = "ecr-repo/Jenkinsfile"
 def description = "Pipeline DSL to create ECR repository and build Docker image!"
 def displayName = "Monitoring ECR Repository Builder Job"
 def branchesName = "*/master"

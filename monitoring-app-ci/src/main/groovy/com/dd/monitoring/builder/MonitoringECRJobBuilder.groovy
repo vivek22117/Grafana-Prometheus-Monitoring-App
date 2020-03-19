@@ -31,7 +31,7 @@ class MonitoringECRJobBuilder {
                                 credentials(credentialId)
                             }
                         }
-                        scriptPath(readFileFromWorkspace(scriptPath))
+                        scriptPath('jenkins/' + scriptPath)
                         lightweight(true)
                     }
                 }
