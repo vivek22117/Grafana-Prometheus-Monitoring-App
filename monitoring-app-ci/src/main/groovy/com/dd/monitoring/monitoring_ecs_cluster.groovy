@@ -7,7 +7,7 @@ def factory = this as JobParent
 def listOfEnvironment = ["dev", "qa", "prod"]
 def component = "monitoring-ecs-cluster-job"
 
-def scriptLocation = "jenkins/ecs-cluster"
+def scriptLocation = "jenkins/ecs-cluster/"
 def description = "Pipeline DSL to create ECS Cluster, Load Balancer, ASG and Security groups!"
 def displayName = "Monitoring ECS Cluster Builder Job"
 def branchesName = "*/master"
