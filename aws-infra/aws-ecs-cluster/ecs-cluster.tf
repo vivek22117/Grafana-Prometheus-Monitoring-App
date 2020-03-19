@@ -101,7 +101,7 @@ resource "aws_alb_listener_rule" "ecs_alb_listener_rule" {
   }
 }
 
-resource "aws_lb_target_group" "ecs_alb_default_target_group" {
+/*resource "aws_lb_target_group" "ecs_alb_default_target_group" {
   name = "${var.component_name}-${var.environment}-tg"
 
   port        = var.default_target_group_port
@@ -121,9 +121,8 @@ resource "aws_lb_target_group" "ecs_alb_default_target_group" {
     timeout             = 5
     interval            = 30
     path                = "/"
-    port                = var.default_target_group_port
   }
-}
+}*/
 
 resource "aws_autoscaling_group" "ecs_monitoring_cluster_asg" {
   name_prefix         = "${var.component_name}-${var.environment}-asg"
@@ -134,7 +133,6 @@ resource "aws_autoscaling_group" "ecs_monitoring_cluster_asg" {
     id      = aws_launch_template.ecs_cluster_monitoring_app_lt.id
     version = aws_launch_template.ecs_cluster_monitoring_app_lt.latest_version
   }
-  target_group_arns = [aws_lb_target_group.ecs_alb_default_target_group.arn]
 
   termination_policies      = var.termination_policies
   max_size                  = var.app_asg_max_size

@@ -31,7 +31,7 @@ class MonitoringECSClusterJobBuilder {
                                 credentials(credentialId)
                             }
                         }
-                        scriptPath(scriptPath)
+                        scriptPath('jenkins/ecs-cluster/Jenkinsfile')
                         lightweight(true)
                     }
                 }

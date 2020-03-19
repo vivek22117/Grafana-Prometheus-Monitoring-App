@@ -34,6 +34,16 @@ data "terraform_remote_state" "ecs-cluster" {
   }
 }
 
+data "terraform_remote_state" "monitoring_ecr_state" {
+  backend = "s3"
+
+  config = {
+    profile = var.profile
+    bucket  = "${var.s3_bucket_prefix}-${var.environment}-${var.default_region}"
+    key     = "state/${var.environment}/ecr-repo/monitoring-app/terraform.tfstate"
+    region  = var.default_region
+  }
+}
 
 data "template_file" "ecs_service_policy_template" {
   template = file("${path.module}/policy-doc/ecs-service-policy.json")
@@ -49,19 +59,9 @@ data "template_file" "ecs_task_policy_template" {
   }
 }
 
-data "terraform_remote_state" "monitoring_ecr_state" {
-  backend = "s3"
-
-  config = {
-    profile = var.profile
-    bucket  = "${var.s3_bucket_prefix}-${var.environment}-${var.default_region}"
-    key     = "state/${var.environment}/ecr-repo/monitoring-app/terraform.tfstate"
-    region  = var.default_region
-  }
-}
 
 data "template_file" "grafana_prometheus_task" {
-  template = file("${path.module}/tasks/grafana-prometheus-task.json")
+  template = file("${path.module}/tasks/grafana-task.json")
 
   vars = {
     grafana_image     = var.grafana_image

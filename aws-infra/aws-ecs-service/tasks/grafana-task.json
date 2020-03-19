@@ -1,0 +1,29 @@
+[
+  {
+    "Image": "${grafana_image}",
+    "Memory": 512,
+    "Name": "Grafana-Container",
+    "cpu": 256,
+    "LogConfiguration": {
+      "LogDriver": "awslogs",
+      "Options": {
+        "awslogs-group": "${log_group}",
+        "awslogs-stream-prefix": "monitoring-app",
+        "awslogs-region": "${aws_region}"
+      }
+    },
+    "PortMappings": [
+      {
+        "ContainerPort": 3000,
+        "Protocol": "tcp",
+        "hostPort": 0
+      }
+    ],
+    "Environment": [
+      {
+        "Name": "GF_INSTALL_PLUGINS",
+        "Value": "grafana-piechart-panel"
+      }
+    ]
+  }
+]
