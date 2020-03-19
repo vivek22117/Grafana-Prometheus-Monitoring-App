@@ -1,4 +1,4 @@
-//Global Variables
+#####=================Global Variables==============#####
 variable "profile" {
   type        = string
   description = "AWS Profile name for credentials"
@@ -26,7 +26,7 @@ variable "component_name" {
 
 
 #################################
-# ECS Variables                 #
+# ECS Service Variables         #
 #################################
 variable "service_launch_type" {
   type = string
@@ -41,6 +41,11 @@ variable "service_desired_count" {
 variable "log_retention_days" {
   type        = number
   description = "Number of days to retain cloudwatch logs"
+}
+
+variable "log_group_name" {
+  type        = string
+  description = "Log group name for logs"
 }
 
 variable "grafana_image" {
@@ -78,27 +83,27 @@ variable "volume_size" {
   description = "Volume size"
 }
 
-variable "default_target_group_port" {
+variable "target_group_port" {
   type        = number
   description = "Target group port for ECS Cluster"
 }
 
-variable "app_asg_max_size" {
+variable "rsvp_asg_max_size" {
   type        = string
   description = "ASG max size"
 }
 
-variable "app_asg_min_size" {
+variable "rsvp_asg_min_size" {
   type        = string
   description = "ASG min size"
 }
 
-variable "app_asg_desired_capacity" {
+variable "rsvp_asg_desired_capacity" {
   type        = string
   description = "ASG desired capacity"
 }
 
-variable "app_asg_health_check_grace_period" {
+variable "rsvp_asg_health_check_grace_period" {
   type        = string
   description = "ASG health check grace period"
 }
@@ -108,7 +113,7 @@ variable "health_check_type" {
   description = "ASG health check type"
 }
 
-variable "app_asg_wait_for_elb_capacity" {
+variable "rsvp_asg_wait_for_elb_capacity" {
   type        = string
   description = "ASG waith for ELB capacity"
 }
@@ -146,8 +151,8 @@ variable "custom_tags" {
   description = "Custom tags to set on the Instances in the ASG"
   type        = map(string)
   default = {
-    owner      = "Vivek"
-    team       = "DoubleDigit"
+    owner      = "vivek"
+    team       = "doubledigit-solutions"
     tool       = "Terraform"
     monitoring = "true"
     Name       = "Monitoring-App"
@@ -160,7 +165,7 @@ variable "custom_tags" {
 locals {
   common_tags = {
     owner       = "Vivek"
-    team        = "DoubleDigit"
+    team        = "TeamConcept"
     environment = var.environment
   }
 }

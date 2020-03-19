@@ -24,7 +24,7 @@ terraform {
     profile        = "admin"
     bucket         = "doubledigit-tfstate-dev-us-east-1"
     dynamodb_table = "doubledigit-tfstate-dev-us-east-1"
-    key            = "state/dev/ecr-repo/monitoring-app/terraform.tfstate"
+    key            = "state/dev/ecs-service/monitoring-app/terraform.tfstate"
     region         = "us-east-1"
     encrypt        = true
   }

@@ -9,13 +9,13 @@ resource "aws_security_group" "ecs_instance_sg" {
   lifecycle {
     create_before_destroy = true
   }
-  tags = local.common_tags
+  tags = merge(local.common_tags, map("Name", "monitoring-app-ec2-sg"))
 }
 
 resource "aws_security_group_rule" "allow_traffic_from_lb" {
   type                     = "ingress"
-  from_port                = 3000
-  to_port                  = 3000
+  from_port                = 1
+  to_port                  = 65535
   protocol                 = "tcp"
   security_group_id        = aws_security_group.ecs_instance_sg.id
   source_security_group_id = aws_security_group.ecs_alb_sg.id
@@ -51,7 +51,7 @@ resource "aws_security_group" "ecs_alb_sg" {
   lifecycle {
     create_before_destroy = true
   }
-  tags = local.common_tags
+  tags = merge(local.common_tags, map("Name", "monitoring-app-alb-sg"))
 }
 
 resource "aws_security_group_rule" "allow_http_traffic" {
