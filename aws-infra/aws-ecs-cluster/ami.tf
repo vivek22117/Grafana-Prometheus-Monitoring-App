@@ -1,3 +1,4 @@
+/*
 data "aws_ami" "ecs-node-ami" {
   most_recent = true
   owners      = ["self"]
@@ -21,4 +22,4 @@ data "aws_ami" "latest_ecs" {
     name   = "virtualization-type"
     values = ["hvm"]
   }
-}
+}*/
