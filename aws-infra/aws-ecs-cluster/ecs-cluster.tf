@@ -101,7 +101,7 @@ resource "aws_alb_listener_rule" "ecs_alb_listener_rule" {
   }
 }
 
-/*resource "aws_lb_target_group" "ecs_alb_default_target_group" {
+resource "aws_lb_target_group" "ecs_alb_default_target_group" {
   name = "${var.component_name}-${var.environment}-tg"
 
   port        = var.default_target_group_port
@@ -122,7 +122,7 @@ resource "aws_alb_listener_rule" "ecs_alb_listener_rule" {
     interval            = 30
     path                = "/"
   }
-}*/
+}
 
 resource "aws_autoscaling_group" "ecs_monitoring_cluster_asg" {
   name_prefix         = "${var.component_name}-${var.environment}-asg"
