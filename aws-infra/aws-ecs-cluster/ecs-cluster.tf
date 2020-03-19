@@ -14,7 +14,7 @@ resource "aws_ecs_cluster" "monitoring_ecs_cluster" {
 resource "aws_launch_template" "ecs_cluster_monitoring_app_lt" {
   name_prefix = "${var.component_name}-${var.environment}"
 
-  image_id      = data.aws_ami.latest_ecs.id
+  image_id      = "ami-098616968d61e549e"
   instance_type = var.instance_type
   key_name      = var.key_name
 
