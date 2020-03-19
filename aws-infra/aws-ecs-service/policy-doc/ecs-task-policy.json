@@ -21,21 +21,6 @@
         "ecs:Poll",
         "ecs:StartTelemetrySession"
       ]
-    },
-    {
-      "Effect": "Allow",
-      "Action": [
-        "ecs:Update*",
-        "ecs:Register*",
-        "ecs:Deregister*",
-        "ecs:List*",
-        "ecs:Put*",
-        "ecs:Run*",
-        "ecs:Start*",
-        "ecs:Stop*",
-        "ecs:Submit*"
-      ],
-      "Resource": "arn:aws:ecs:us-east-1:${account_id}:cluster/${environment}-${component-name}"
     }
   ]
 }

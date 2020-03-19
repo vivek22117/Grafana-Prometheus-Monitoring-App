@@ -5,7 +5,7 @@ data "terraform_remote_state" "vpc" {
   backend = "s3"
 
   config = {
-    profile = "admin"
+    profile = var.profile
     bucket  = "${var.s3_bucket_prefix}-${var.environment}-${var.default_region}"
     key     = "state/${var.environment}/vpc/terraform.tfstate"
     region  = var.default_region
@@ -26,9 +26,9 @@ data "terraform_remote_state" "backend" {
 data "terraform_remote_state" "ecs-cluster" {
   backend = "s3"
 
-  config {
+  config = {
     profile = var.profile
-    bucket = "${var.s3_bucket_prefix}-${var.environment}=${var.default_region}"
+    bucket = "${var.s3_bucket_prefix}-${var.environment}-${var.default_region}"
     key = "state/${var.environment}/ecs-cluster/monitoring-app/terraform.tfstate"
     region = var.default_region
   }
@@ -65,8 +65,7 @@ data "template_file" "grafana_prometheus_task" {
 
   vars = {
     grafana_image     = var.grafana_image
-    prometheus_image  = data.terraform_remote_state.monitoring_ecr_state.outputs.ecr_registry_url
-    log_group         = aws_cloudwatch_log_group.monitoring_log_group.name
+    log_group         = data.terraform_remote_state.ecs-cluster.outputs.ecs-cluster-log-group
     aws_region        = var.default_region
   }
 }
