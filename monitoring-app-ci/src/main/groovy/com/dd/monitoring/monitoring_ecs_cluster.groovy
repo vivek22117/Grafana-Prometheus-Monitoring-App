@@ -1,20 +1,21 @@
 package com.dd.monitoring
 
 import com.dd.monitoring.builder.MonitoringECRJobBuilder
+import com.dd.monitoring.builder.MonitoringECSClusterJobBuilder
 import javaposse.jobdsl.dsl.JobParent
 
 def factory = this as JobParent
 def listOfEnvironment = ["dev", "qa", "prod"]
 def component = "monitoring-ecs-cluster-job"
 
-def scriptLocation = "jenkins/ecs-cluster/"
+def scriptLocation = 'jenkins/ecs-cluster/Jenkinsfile'
 def description = "Pipeline DSL to create ECS Cluster, Load Balancer, ASG and Security groups!"
 def displayName = "Monitoring ECS Cluster Builder Job"
 def branchesName = "*/master"
 def githubUrl = "https://github.com/vivek22117/Grafana-Prometheus-Monitoring-App.git"
 
 
-new MonitoringECRJobBuilder(
+new MonitoringECSClusterJobBuilder(
         dslFactory: factory,
         description: description,
         jobName: component + "-" + listOfEnvironment.get(0),
@@ -27,7 +28,7 @@ new MonitoringECRJobBuilder(
 ).build()
 
 
-new MonitoringECRJobBuilder(
+new MonitoringECSClusterJobBuilder(
         dslFactory: factory,
         description: description,
         jobName: component + "-" + listOfEnvironment.get(1),
@@ -40,7 +41,7 @@ new MonitoringECRJobBuilder(
 ).build()
 
 
-new MonitoringECRJobBuilder(
+new MonitoringECSClusterJobBuilder(
         dslFactory: factory,
         description: description,
         jobName: component + "-" + listOfEnvironment.get(2),

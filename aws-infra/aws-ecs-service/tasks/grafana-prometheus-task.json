@@ -27,7 +27,7 @@
     ]
   },
   {
-    "Image": "${prometheus_image}:1584609608",
+    "Image": "${prometheus_image}:1584638905",
     "Memory": 512,
     "Name": "Prometheus-monitoring",
     "cpu": 256,
