@@ -28,29 +28,9 @@ variable "component_name" {
 #################################
 # ECS Variables                 #
 #################################
-variable "service_launch_type" {
-  type = string
-  description = "The launch type, can be EC2 or FARGATE"
-}
-
-variable "service_desired_count" {
-  type = number
-  description = "The number of instances of the task definition to place and keep running."
-}
-
 variable "log_retention_days" {
   type        = number
   description = "Number of days to retain cloudwatch logs"
-}
-
-variable "grafana_image" {
-  type        = string
-  description = "Grafana image from Docker"
-}
-
-variable "ecs_task_mode" {
-  type        = string
-  description = "ECS task network mode"
 }
 
 variable "bucket_name" {

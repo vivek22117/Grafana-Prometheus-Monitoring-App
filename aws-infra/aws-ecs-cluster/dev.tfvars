@@ -4,7 +4,6 @@ default_region = "us-east-1"
 component_name = "monitoring-app"
 
 log_retention_days = 3
-grafana_image      = "grafana/grafana"
 
 instance_type                      = "t2.small"
 key_name                           = "doubledigit-solutions"
