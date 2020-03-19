@@ -31,14 +31,14 @@ class MonitoringECRJobBuilder {
                                 credentials(credentialId)
                             }
                         }
-                        scriptPath('jenkins/' + scriptPath)
+                        scriptPath(scriptPath)
                         lightweight(true)
                     }
                 }
             }
             parameters {
                 stringParam('ENVIRONMENT', environment)
-                nodeParam(environment) {
+                nodeParam('Label') {
                     description('Select the node to execute the job!')
                     defaultNodes(['dev'])
                 }
