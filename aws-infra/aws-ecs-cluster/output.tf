@@ -17,3 +17,7 @@ output "ecs-cluster-id" {
   value = aws_ecs_cluster.monitoring_ecs_cluster.id
   description = "AWS Monitoring app ECS Cluster id!"
 }
+
+output "alb-target-group-arn" {
+  value = aws_lb_target_group.ecs_alb_default_target_group.arn
+}

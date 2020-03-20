@@ -27,7 +27,7 @@ resource "aws_ecs_service" "monitoring_ecs_service" {
   launch_type = var.service_launch_type
 
   load_balancer {
-    target_group_arn = data.terraform_remote_state.ecs-cluster.outputs.ecs-cluster-lb-arn
+    target_group_arn = data.terraform_remote_state.ecs-cluster.outputs.alb-target-group-arn
     container_name   = "Grafana-Container"
     container_port   = 3000
   }
