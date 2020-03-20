@@ -1,4 +1,3 @@
-/*
 data "aws_ami" "ecs-node-ami" {
   most_recent = true
   owners      = ["self"]
@@ -9,6 +8,7 @@ data "aws_ami" "ecs-node-ami" {
   }
 }
 
+/*
 data "aws_ami" "latest_ecs" {
   most_recent = true
   owners = [data.aws_caller_identity.current.account_id] # AWS
