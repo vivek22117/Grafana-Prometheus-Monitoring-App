@@ -1,7 +1,7 @@
 [
   {
     "Image": "${grafana_image}:1584976406-g",
-    "Memory": 512,
+    "Memory": 256,
     "Name": "Grafana-Container",
     "cpu": 256,
     "LogConfiguration": {
