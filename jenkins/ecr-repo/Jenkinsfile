@@ -117,7 +117,7 @@ pipeline {
                         echo 'logged in successfully'
 
                         echo 'Building the docker image'
-                        sh 'cd docker/prometheus'
+                        sh 'cd docker/prometheus/'
                         sh 'docker build -t infra-monitoring-app .'
                         echo 'Image built successfully'
 
@@ -154,7 +154,7 @@ pipeline {
                         echo 'logged in successfully'
 
                         echo 'Building the docker image: Grafana'
-                        sh 'cd docker/grafana'
+                        sh 'cd docker/grafana/'
                         sh 'docker build -t infra-monitoring-app .'
                         echo 'Image built successfully'
 
