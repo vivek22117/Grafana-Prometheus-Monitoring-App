@@ -37,7 +37,7 @@ resource "aws_launch_template" "ecs_cluster_monitoring_app_lt" {
   network_interfaces {
     device_index                = 0
     associate_public_ip_address = false
-    security_groups             = [aws_security_group.ecs_instance_sg.id]
+    security_groups             = [aws_security_group.ecs_instance_sg.id, data.terraform_remote_state.vpc.outputs.ecs_task_sg]
     delete_on_termination       = true
   }
 
