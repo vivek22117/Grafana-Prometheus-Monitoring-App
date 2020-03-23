@@ -14,7 +14,7 @@ resource "aws_security_group" "ecs_instance_sg" {
 
 resource "aws_security_group_rule" "allow_traffic_from_lb" {
   type                     = "ingress"
-  from_port                = 1
+  from_port                = 1024
   to_port                  = 65535
   protocol                 = "tcp"
   security_group_id        = aws_security_group.ecs_instance_sg.id
