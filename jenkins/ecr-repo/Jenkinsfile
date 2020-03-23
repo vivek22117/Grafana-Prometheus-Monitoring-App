@@ -94,7 +94,7 @@ pipeline {
                 }
             }
         }
-        stage('build-docker') {
+        stage('build-docker-prometheus') {
             when {
                 expression {
                     "${params.AWS_INFRA_ACTION}" == "create"
@@ -117,14 +117,52 @@ pipeline {
                         echo 'logged in successfully'
 
                         echo 'Building the docker image'
+                        sh 'cd docker/prometheus'
                         sh 'docker build -t infra-monitoring-app .'
                         echo 'Image built successfully'
 
                         // tag the image
-                        sh "docker tag infra-monitoring-app:latest ${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/infra-monitoring-app:${IMAGE_TAG}"
+                        sh "docker tag infra-monitoring-app:latest ${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/infra-monitoring-app:${IMAGE_TAG}-p"
 
                         echo 'Pushing image to ECR'
-                        sh "docker push ${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/infra-monitoring-app:${IMAGE_TAG}"
+                        sh "docker push ${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/infra-monitoring-app:${IMAGE_TAG}-p"
+                        echo "${IMAGE_TAG} ' Image pushed to ECR'"
+
+                    }
+            }
+        }
+        stage('build-docker-grafana') {
+            when {
+                expression {
+                    "${params.AWS_INFRA_ACTION}" == "create"
+                }
+            }
+            steps {
+                    script {
+                        echo 'Job to push Docker Image of GRAFANA to Elastic Container Repository'
+                        sh 'docker --version'
+
+                        def AWS_ACCOUNT_ID = sh(script: "aws sts get-caller-identity --query 'Account' --output text", returnStdout: true).trim()
+                        print("AWS ACCOUNT = ${AWS_ACCOUNT_ID}")
+
+                        def IMAGE_TAG = sh(script: 'date +%s', returnStdout: true).trim()
+                        print("IMAGE_TAG =  ${IMAGE_TAG}")
+
+                        echo 'login to ecr started'
+                        // sh(script: "aws ecr get-login --no-include-email --region us-east-1", returnStdout: true)
+                        sh '$(aws ecr get-login --no-include-email --region us-east-1)'
+                        echo 'logged in successfully'
+
+                        echo 'Building the docker image: Grafana'
+                        sh 'cd docker/grafana'
+                        sh 'docker build -t infra-monitoring-app .'
+                        echo 'Image built successfully'
+
+                        // tag the image
+                        sh "docker tag infra-monitoring-app:latest ${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/infra-monitoring-app:${IMAGE_TAG}-g"
+
+                        echo 'Pushing image to ECR'
+                        sh "docker push ${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/infra-monitoring-app:${IMAGE_TAG}-g"
                         echo "${IMAGE_TAG} ' Image pushed to ECR'"
 
                     }

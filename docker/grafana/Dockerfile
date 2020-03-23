@@ -1,0 +1,4 @@
+FROM grafana/grafana
+
+ENV GF_AUTH_ANONYMOUS_ENABLED "true"
+ENV GF_USERS_ALLOW_SIGN_UP "false"

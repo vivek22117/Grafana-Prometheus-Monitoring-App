@@ -22,7 +22,15 @@
     "Environment": [
       {
         "Name": "GF_INSTALL_PLUGINS",
-        "Value": "grafana-piechart-panel"
+        "Value": "grafana-piechart-panel,grafana-clock-panel,grafana-simple-json-datasource"
+      },
+      {
+        "Name": "GF_SECURITY_ADMIN_USER",
+        "Value": "admin"
+      },
+      {
+        "Name": "GF_SECURITY_ADMIN_PASSWORD",
+        "Value": "don@2244"
       }
     ]
   }
