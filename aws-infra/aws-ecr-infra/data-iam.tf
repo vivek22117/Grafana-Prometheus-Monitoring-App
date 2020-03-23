@@ -4,21 +4,6 @@ data "aws_iam_policy_document" "ecr_access_policy" {
   count = var.enabled ? 1 : 0
 
   statement {
-    sid    = "FullAccess"
-    effect = "Allow"
-
-    principals {
-      type = "AWS"
-
-      identifiers = ["*"]
-    }
-
-    actions = [
-      "*"
-    ]
-  }
-
-  statement {
     sid    = "AllowPushPull"
     effect = "Allow"
 
@@ -30,12 +15,20 @@ data "aws_iam_policy_document" "ecr_access_policy" {
 
     actions = [
       "ecr:GetDownloadUrlForLayer",
-      "ecr:BatchGetImage",
-      "ecr:BatchCheckLayerAvailability",
       "ecr:PutImage",
       "ecr:InitiateLayerUpload",
       "ecr:UploadLayerPart",
-      "ecr:CompleteLayerUpload"
+      "ecr:CompleteLayerUpload",
+      "ecr:DescribeRepositories",
+      "ecr:GetRepositoryPolicy",
+      "ecr:ListImages",
+      "ecr:DeleteRepository",
+      "ecr:BatchDeleteImage",
+      "ecr:SetRepositoryPolicy",
+      "ecr:DeleteRepositoryPolicy",
+      "ecr:GetAuthorizationToken",
+      "ecr:BatchCheckLayerAvailability",
+      "ecr:BatchGetImage"
     ]
   }
 }
