@@ -101,6 +101,7 @@ pipeline {
                 }
             }
             steps {
+                dir('docker/prometheus/'){
                     script {
                         echo 'Job to push Docker Image to Elastic Container Repository'
                         sh 'docker --version'
@@ -117,7 +118,6 @@ pipeline {
                         echo 'logged in successfully'
 
                         echo 'Building the docker image'
-                        sh 'cd docker/prometheus/'
                         sh 'docker build -t infra-monitoring-app .'
                         echo 'Image built successfully'
 
@@ -129,6 +129,7 @@ pipeline {
                         echo "${IMAGE_TAG} ' Image pushed to ECR'"
 
                     }
+                }
             }
         }
         stage('build-docker-grafana') {
@@ -138,6 +139,7 @@ pipeline {
                 }
             }
             steps {
+                dir('docker/prometheus/'){
                     script {
                         echo 'Job to push Docker Image of GRAFANA to Elastic Container Repository'
                         sh 'docker --version'
@@ -154,7 +156,6 @@ pipeline {
                         echo 'logged in successfully'
 
                         echo 'Building the docker image: Grafana'
-                        sh 'cd docker/grafana/'
                         sh 'docker build -t infra-monitoring-app .'
                         echo 'Image built successfully'
 
@@ -166,7 +167,7 @@ pipeline {
                         echo "${IMAGE_TAG} ' Image pushed to ECR'"
 
                     }
-            }
+            }   }
         }
       }
       post {
