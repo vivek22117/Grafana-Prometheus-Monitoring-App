@@ -139,7 +139,7 @@ pipeline {
                 }
             }
             steps {
-                dir('docker/prometheus/'){
+                dir('docker/grafana/'){
                     script {
                         echo 'Job to push Docker Image of GRAFANA to Elastic Container Repository'
                         sh 'docker --version'
