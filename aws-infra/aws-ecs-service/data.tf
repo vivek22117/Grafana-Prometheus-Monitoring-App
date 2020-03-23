@@ -63,7 +63,7 @@ data "template_file" "grafana_prometheus_task" {
   template = file("${path.module}/tasks/grafana-task.json")
 
   vars = {
-    grafana_image     = var.grafana_image
+    grafana_image     = data.terraform_remote_state.monitoring_ecr_state.outputs.ecr_registry_url
     log_group         = data.terraform_remote_state.ecs-cluster.outputs.ecs-cluster-log-group
     aws_region        = var.default_region
   }
