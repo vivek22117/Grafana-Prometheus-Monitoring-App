@@ -59,7 +59,6 @@ data "template_file" "ecs_task_policy_template" {
   }
 }
 
-
 data "template_file" "grafana_prometheus_task" {
   template = file("${path.module}/tasks/grafana-task.json")
 
@@ -69,6 +68,5 @@ data "template_file" "grafana_prometheus_task" {
     aws_region        = var.default_region
   }
 }
-
 
 data "aws_caller_identity" "current" {}

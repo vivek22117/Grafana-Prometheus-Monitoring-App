@@ -1,4 +1,4 @@
-owner_team     = "DoubleDigit"
+owner_team     = "DoubleDigitTeam"
 default_region = "us-east-1"
 
 component_name = "monitoring-app"

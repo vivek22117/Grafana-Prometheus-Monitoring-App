@@ -27,7 +27,6 @@ resource "aws_iam_policy" "ecs_service_policy" {
   policy      = data.template_file.ecs_service_policy_template.rendered
 }
 
-
 resource "aws_iam_role_policy_attachment" "ecs_service_role_att" {
   policy_arn = aws_iam_policy.ecs_service_policy.arn
   role       = aws_iam_role.ecs_service_role.name
