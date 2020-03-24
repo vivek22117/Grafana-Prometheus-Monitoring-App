@@ -127,7 +127,7 @@ resource "aws_lb_target_group" "ecs_alb_default_target_group" {
 resource "aws_autoscaling_group" "ecs_monitoring_cluster_asg" {
   name_prefix         = "${var.component_name}-${var.environment}-asg"
 
-  vpc_zone_identifier = data.terraform_remote_state.vpc.outputs.public_subnets
+  vpc_zone_identifier = data.terraform_remote_state.vpc.outputs.private_subnets
 
   launch_template {
     id      = aws_launch_template.ecs_cluster_monitoring_app_lt.id
