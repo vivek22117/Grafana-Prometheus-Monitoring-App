@@ -10,7 +10,7 @@ def component = "monitoring-ecs-service-job"
 
 def scriptLocation = 'jenkins/ecs-service/Jenkinsfile'
 def description = "Pipeline DSL to create ECS service, Load Balancer, ASG and Security groups!"
-def displayName = "Monitoring ECS Cluster Builder Job"
+def displayName = "Monitoring ECS Service Builder Job"
 def branchesName = "*/master"
 def githubUrl = "https://github.com/vivek22117/Grafana-Prometheus-Monitoring-App.git"
 
