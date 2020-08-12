@@ -56,6 +56,12 @@ resource "aws_launch_template" "ecs_cluster_monitoring_app_lt" {
     }
   }
 
+  tag_specifications {
+    resource_type = "instance"
+
+    tags = merge(local.common_tags, map("Project", "DoubleDigit-Solutions"))
+  }
+
   lifecycle {
     create_before_destroy = true
   }
