@@ -1,6 +1,6 @@
 [
   {
-    "Image": "${grafana_image}:*-g",
+    "Image": "${grafana_image}:1597228159-g",
     "Memory": 256,
     "Name": "Grafana-Container",
     "cpu": 256,
