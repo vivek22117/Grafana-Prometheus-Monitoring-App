@@ -1,6 +1,6 @@
 provider "aws" {
   region  = var.default_region
-  profile = var.profile
+//  profile = var.profile
 
   version = ">=2.35"
 }
@@ -22,9 +22,9 @@ terraform {
 
   backend "s3" {
     profile        = "admin"
-    bucket         = "doubledigit-tfstate-dev-us-east-1"
-    dynamodb_table = "doubledigit-tfstate-dev-us-east-1"
-    key            = "state/dev/ecr-repo/monitoring-app/terraform.tfstate"
+    bucket         = "doubledigit-tfstate-qa-us-east-1"
+    dynamodb_table = "doubledigit-tfstate-qa-us-east-1"
+    key            = "state/qa/ecr-repo/monitoring-app/terraform.tfstate"
     region         = "us-east-1"
     encrypt        = true
   }

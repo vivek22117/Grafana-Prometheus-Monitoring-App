@@ -130,7 +130,8 @@ variable "custom_tags" {
     team       = "DoubleDigit"
     tool       = "Terraform"
     monitoring = "true"
-    Name       = "Monitoring-App"
+    Name       = "Monitoring-App",
+    Project = "DoubleDigit-Solutions"
   }
 }
 

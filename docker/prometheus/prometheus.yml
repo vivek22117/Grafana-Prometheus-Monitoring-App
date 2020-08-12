@@ -37,7 +37,7 @@ scrape_configs:
         target_label: instance   
 
   - job_name: 'rsvp-data-api'
-    metrics_path: '/actuator/prometheus'
+    metrics_path: '/metrics'
     scrape_interval: 15s
     static_configs:
     - targets: ['rsvp.data.api.doubledigit.cloud-solutions:9005']

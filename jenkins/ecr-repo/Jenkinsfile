@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        label 'dev'
+        label any
     }
 
     options {
@@ -9,7 +9,6 @@ pipeline {
         skipStagesAfterUnstable()
     }
     parameters {
-        string(name: 'EMAIL_TO', defaultValue: 'vivekmishra22117@gmail.com', description: 'Email Id')
         string(name: 'ENVIRONMENT', defaultValue: 'dev', description: 'Environment....')
         choice(
             choices: ['create', 'destroy'],

@@ -14,12 +14,14 @@
       "ami_name": "ecs-instance-dd",
       "ami_description": "Amazon Linux Image with Docker",
       "run_tags": {
-        "Name": "packer-builder"
+        "Name": "packer-builder",
+        "Project": "DoubleDigit-Solutions"
       },
       "tags": {
         "Tool": "Packer",
         "Name": "ECS-Server-AMI",
-        "Author": "vivek"
+        "Author": "Vivek",
+        "Project": "DoubleDigit-Solutions"
       }
     }
   ],

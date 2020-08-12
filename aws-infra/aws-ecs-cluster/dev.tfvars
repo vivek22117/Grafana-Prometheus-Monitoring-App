@@ -21,5 +21,5 @@ termination_policies               = ["OldestInstance", "Default"]
 suspended_processes                = []
 wait_for_capacity_timeout          = "7m"
 
-bucket_name                        = "doubledigit-tfstate-dev-us-east-1"
+bucket_name                        = "doubledigit-tfstate-qa-us-east-1"
 
